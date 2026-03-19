@@ -340,7 +340,7 @@
 
     <p class="formula-note">
       SGPA = Total Points ÷ Total Credits &nbsp;|&nbsp; Percentage = (SGPA − 0.5) × 10 &nbsp;|&nbsp;
-      Grade Scale: O=10, A+=9, A=8, B+=7, B=6, C=5
+      Grade Scale: O=10, A+=9, A=8, B+=7, B=6, C=5, F=0
     </p>
   </div>
 
@@ -375,7 +375,7 @@
   const WORKER_URL = "https://old-rice-ce7a.donthulanithish53.workers.dev";
 
   // Grade point map (as per your provided calculation)
-  const GRADE_MAP = { "O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5 };
+  const GRADE_MAP = { "O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5, "F": 0, "AB": 0, "F AB": 0 };
 
   function showError(msg) {
     const el = document.getElementById('errorMsg');
@@ -490,7 +490,7 @@
       if (!isNaN(credit) && gp !== undefined) {
         totalCredits += credit;
         totalPoints  += credit * gp;
-        breakdown.push({ subCode, subName, credit, grade, gp, points: credit * gp });
+        breakdown.push({ subCode, subName, credit, grade, gp, points: credit * gp, failed: gp === 0 });
       }
     });
 
@@ -511,12 +511,14 @@
     tfoot.innerHTML = '';
 
     breakdown.forEach(r => {
+      const failStyle = r.failed ? 'background:#fff0f0;' : '';
+      const failMark  = r.failed ? ' ❌' : '';
       tbody.insertAdjacentHTML('beforeend', `
-        <tr>
+        <tr style="${failStyle}">
           <td>${r.subCode}</td>
-          <td>${r.subName}</td>
+          <td>${r.subName}${failMark}</td>
           <td style="text-align:center">${r.credit}</td>
-          <td style="text-align:center"><b>${r.grade}</b></td>
+          <td style="text-align:center;color:${r.failed ? '#cc0000' : 'inherit'};"><b>${r.grade}</b></td>
           <td style="text-align:center" class="gp-val">${r.gp}</td>
           <td style="text-align:center">${r.points.toFixed(1)}</td>
         </tr>
