@@ -278,7 +278,7 @@
   <label for="htno">Enter Hall Ticket Number</label>
   <div class="input-row">
     <input type="text" id="htno" maxlength="12"
-           placeholder="e.g. 216325672007"
+           placeholder="e.g. 21xxxxxxxxxx"
            autocomplete="off" inputmode="numeric"/>
     <button id="fetchBtn" onclick="fetchResult()">Get Result</button>
   </div>
@@ -375,7 +375,7 @@
   const WORKER_URL = "https://old-rice-ce7a.donthulanithish53.workers.dev";
 
   // Grade point map (as per your provided calculation)
-  const GRADE_MAP = { "O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5, "F": 0, "AB": 0, "F AB": 0 };
+  const GRADE_MAP = { "O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5, "F": 0, "FAIL": 0, "AB": 0, "F AB": 0 };
 
   function showError(msg) {
     const el = document.getElementById('errorMsg');
@@ -488,21 +488,45 @@
       const gp      = GRADE_MAP[grade];
 
       if (!isNaN(credit) && gp !== undefined) {
+        const isFail = gp === 0;
+        // ALL subjects counted in total credits (including failed = 0 points)
         totalCredits += credit;
-        totalPoints  += credit * gp;
-        breakdown.push({ subCode, subName, credit, grade, gp, points: credit * gp, failed: gp === 0 });
+        if (!isFail) {
+          totalPoints += credit * gp;
+        }
+        breakdown.push({ subCode, subName, credit, grade, gp, points: isFail ? 0 : credit * gp, failed: isFail });
       }
     });
 
     if (totalCredits === 0) return;
 
-    const sgpa       = (totalPoints / totalCredits).toFixed(2);
-    const percentage = ((sgpa - 0.5) * 10).toFixed(2);
+    const sgpa        = (totalPoints / totalCredits).toFixed(2);
+    const percentage  = ((sgpa - 0.5) * 10).toFixed(2);
+    const failedSubs  = breakdown.filter(r => r.failed);
+    const passedSubs  = breakdown.filter(r => !r.failed);
 
     // Update stat boxes
     document.getElementById('sgpaVal').textContent = sgpa;
-    document.getElementById('percVal').textContent = percentage + '%';
-    document.getElementById('credVal').textContent = totalCredits;
+    document.getElementById('percVal').textContent  = percentage + '%';
+    document.getElementById('credVal').textContent  = totalCredits;
+
+    // ── Failed subject warning banner ──
+    let warnHtml = '';
+    if (failedSubs.length > 0) {
+      const failList = failedSubs.map(r => `<b>${r.subCode}</b> – ${r.subName}`).join('<br>');
+      warnHtml = `
+        <div style="background:#fff0f0;border:1px solid #f99;border-left:4px solid #cc0000;
+                    border-radius:4px;padding:12px 16px;margin-bottom:16px;font-size:12px;">
+          <div style="color:#cc0000;font-weight:bold;margin-bottom:6px;">
+            ⚠️ ${failedSubs.length} Subject${failedSubs.length > 1 ? 's' : ''} Failed — Excluded from SGPA Calculation
+          </div>
+          <div style="color:#800000;">${failList}</div>
+          <div style="color:#999;margin-top:6px;font-size:11px;">
+            Failed subject credits are included in total credits but contribute 0 grade points,
+            which lowers your SGPA. Clear the backlog in the supplementary exam.
+          </div>
+        </div>`;
+    }
 
     // Build breakdown table
     const tbody = document.getElementById('breakdownBody');
@@ -510,36 +534,62 @@
     tbody.innerHTML = '';
     tfoot.innerHTML = '';
 
-    breakdown.forEach(r => {
-      const failStyle = r.failed ? 'background:#fff0f0;' : '';
-      const failMark  = r.failed ? ' ❌' : '';
+    // ── Passed subjects first ──
+    passedSubs.forEach(r => {
       tbody.insertAdjacentHTML('beforeend', `
-        <tr style="${failStyle}">
+        <tr>
           <td>${r.subCode}</td>
-          <td>${r.subName}${failMark}</td>
+          <td>${r.subName}</td>
           <td style="text-align:center">${r.credit}</td>
-          <td style="text-align:center;color:${r.failed ? '#cc0000' : 'inherit'};"><b>${r.grade}</b></td>
-          <td style="text-align:center" class="gp-val">${r.gp}</td>
+          <td style="text-align:center"><b>${r.grade}</b></td>
+          <td style="text-align:center;color:#8B1A1A;font-weight:bold;">${r.gp}</td>
           <td style="text-align:center">${r.points.toFixed(1)}</td>
         </tr>
       `);
     });
 
+    // ── Failed subjects shown separately at bottom in red ──
+    failedSubs.forEach(r => {
+      tbody.insertAdjacentHTML('beforeend', `
+        <tr style="background:#fff0f0;">
+          <td style="color:#cc0000;font-weight:bold;">${r.subCode}</td>
+          <td style="color:#cc0000;">${r.subName} &nbsp;<span style="background:#cc0000;color:#fff;
+             font-size:10px;padding:1px 6px;border-radius:3px;font-weight:bold;">FAIL</span></td>
+          <td style="text-align:center;color:#cc0000;">${r.credit}</td>
+          <td style="text-align:center;color:#cc0000;font-weight:bold;">${r.grade}</td>
+          <td style="text-align:center;color:#cc0000;font-weight:bold;">0</td>
+          <td style="text-align:center;color:#cc0000;">— (excluded)</td>
+        </tr>
+      `);
+    });
+
     tfoot.innerHTML = `
-      <tr style="background:#EDC987;font-weight:bold">
-        <td colspan="2">Total</td>
+      <tr style="background:#EDC987;font-weight:bold;">
+        <td colspan="2">Total (all subjects)</td>
         <td style="text-align:center">${totalCredits}</td>
         <td></td>
         <td></td>
         <td style="text-align:center">${totalPoints.toFixed(1)}</td>
       </tr>
-      <tr style="background:#FAF0D8;font-weight:bold">
+      <tr style="background:#FAF0D8;font-weight:bold;">
         <td colspan="4">SGPA = ${totalPoints.toFixed(1)} ÷ ${totalCredits} = <span style="color:#8B1A1A">${sgpa}</span></td>
         <td colspan="2">Percentage = (${sgpa} − 0.5) × 10 = <span style="color:#8B1A1A">${percentage}%</span></td>
       </tr>
     `;
 
-    document.getElementById('breakdownWrap').style.display = 'block';
+    // Insert warning banner before breakdown table
+    const breakdownWrap = document.getElementById('breakdownWrap');
+    // Remove any old warning
+    const oldWarn = document.getElementById('failWarnBox');
+    if (oldWarn) oldWarn.remove();
+    if (warnHtml) {
+      const warnDiv = document.createElement('div');
+      warnDiv.id = 'failWarnBox';
+      warnDiv.innerHTML = warnHtml;
+      breakdownWrap.insertBefore(warnDiv, breakdownWrap.firstChild);
+    }
+
+    breakdownWrap.style.display = 'block';
   }
 
   // Enter key support
