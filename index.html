@@ -308,7 +308,7 @@
       <div class="stat-box">
         <div class="stat-label">Percentage</div>
         <div class="stat-value" id="percVal">—</div>
-        <div class="stat-sub">SGPA × 10</div>
+        <div class="stat-sub">(SGPA − 0.5) × 10</div>
       </div>
       <div class="stat-box">
         <div class="stat-label">Total Credits</div>
@@ -337,7 +337,7 @@
     </div>
 
     <p class="formula-note">
-      SGPA = Total Points ÷ Total Credits &nbsp;|&nbsp; Percentage = SGPA × 10 &nbsp;|&nbsp;
+      SGPA = Total Points ÷ Total Credits &nbsp;|&nbsp; Percentage = (SGPA − 0.5) × 10 &nbsp;|&nbsp;
       Grade Scale: O=10, A+=9, A=8, B+=7, B=6, C=5
     </p>
   </div>
@@ -481,7 +481,7 @@
     if (totalCredits === 0) return;
 
     const sgpa       = (totalPoints / totalCredits).toFixed(2);
-    const percentage = (sgpa * 10).toFixed(2);
+    const percentage = ((sgpa - 0.5) * 10).toFixed(2);
 
     // Update stat boxes
     document.getElementById('sgpaVal').textContent = sgpa;
@@ -517,7 +517,7 @@
       </tr>
       <tr style="background:#FAF0D8;font-weight:bold">
         <td colspan="4">SGPA = ${totalPoints.toFixed(1)} ÷ ${totalCredits} = <span style="color:#8B1A1A">${sgpa}</span></td>
-        <td colspan="2">Percentage = ${sgpa} × 10 = <span style="color:#8B1A1A">${percentage}%</span></td>
+        <td colspan="2">Percentage = (${sgpa} − 0.5) × 10 = <span style="color:#8B1A1A">${percentage}%</span></td>
       </tr>
     `;
 
