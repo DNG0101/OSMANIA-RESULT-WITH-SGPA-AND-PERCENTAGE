@@ -53,6 +53,7 @@ Each grade has a **Grade Point** value:
 | B+    | 7          |
 | B     | 6          |
 | C     | 5          |
+| F     | 0          |
 
 **SGPA Formula:**
 ```
