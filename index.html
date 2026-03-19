@@ -16,24 +16,15 @@
       align-items: center;
     }
 
-    /* ── Top Header ── */
+    /* ── Header ── */
     .site-header {
       width: 100%;
       background: #8B1A1A;
       padding: 14px 20px;
       text-align: center;
     }
-    .site-header h1 {
-      color: #fff;
-      font-size: 18px;
-      font-weight: bold;
-      letter-spacing: .02em;
-    }
-    .site-header p {
-      color: #f5d08a;
-      font-size: 12px;
-      margin-top: 4px;
-    }
+    .site-header h1 { color: #fff; font-size: 18px; font-weight: bold; }
+    .site-header p  { color: #f5d08a; font-size: 12px; margin-top: 4px; }
 
     /* ── Search Card ── */
     .search-card {
@@ -41,7 +32,7 @@
       border: 1px solid #c8a96e;
       border-radius: 6px;
       padding: 28px 32px;
-      margin: 28px auto;
+      margin: 28px auto 0;
       width: 100%;
       max-width: 520px;
       box-shadow: 0 2px 8px rgba(0,0,0,.08);
@@ -53,10 +44,7 @@
       color: #5a3a00;
       margin-bottom: 8px;
     }
-    .input-row {
-      display: flex;
-      gap: 10px;
-    }
+    .input-row { display: flex; gap: 10px; }
     .input-row input {
       flex: 1;
       padding: 10px 14px;
@@ -67,9 +55,7 @@
       background: #FFFDF7;
       outline: none;
     }
-    .input-row input:focus {
-      border-color: #8B1A1A;
-    }
+    .input-row input:focus { border-color: #8B1A1A; }
     .input-row button {
       background: #8B1A1A;
       color: #fff;
@@ -85,11 +71,7 @@
     }
     .input-row button:hover { background: #a02020; }
     .input-row button:disabled { background: #c9a; cursor: not-allowed; }
-    .hint {
-      margin-top: 8px;
-      font-size: 11px;
-      color: #999;
-    }
+    .hint { margin-top: 8px; font-size: 11px; color: #999; }
     .hint b { color: #8B1A1A; }
 
     /* ── Error ── */
@@ -98,7 +80,7 @@
       margin-top: 14px;
       padding: 10px 14px;
       background: #fff5f5;
-      border: 1px solid #e9a;
+      border: 1px solid #f99;
       border-radius: 4px;
       color: #c00;
       font-size: 12px;
@@ -124,26 +106,23 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Result iframe ── */
-    .result-wrap {
+    /* ── Result wrapper ── */
+    .result-section {
       display: none;
       width: 100%;
-      max-width: 780px;
-      margin: 0 auto 40px;
-      background: #fff;
-      border: 1px solid #c8a96e;
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+      max-width: 860px;
+      margin: 24px auto 0;
     }
-    .result-wrap.show { display: block; }
+    .result-section.show { display: block; }
 
+    /* result top bar */
     .result-bar {
       background: #8B1A1A;
       color: #fff;
       padding: 8px 16px;
       font-size: 12px;
       font-weight: bold;
+      border-radius: 6px 6px 0 0;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -153,35 +132,122 @@
       width: 8px; height: 8px;
       background: #4CAF7D;
       border-radius: 50%;
-      display: inline-block;
+      flex-shrink: 0;
     }
 
-    iframe#previewFrame {
+    /* iframe holding exact Osmania HTML */
+    #previewFrame {
       width: 100%;
-      border: none;
+      border: 1px solid #c8a96e;
+      border-top: none;
       display: block;
-      min-height: 480px;
+      min-height: 460px;
+      background: #fff;
     }
 
-    /* ── Print button area ── */
-    .print-bar {
-      display: none;
-      text-align: center;
-      margin-bottom: 30px;
+    /* ── SGPA / Percentage Card ── */
+    .calc-card {
+      background: #fff;
+      border: 1px solid #c8a96e;
+      border-top: 3px solid #8B1A1A;
+      border-radius: 0 0 6px 6px;
+      padding: 22px 28px 24px;
+      margin-top: 0;
     }
-    .print-bar.show { display: block; }
-    .print-bar button {
-      background: #5a3a00;
-      color: #fff;
+    .calc-card h3 {
+      font-size: 14px;
+      font-weight: bold;
+      color: #5a3a00;
+      margin-bottom: 18px;
+      border-bottom: 1px solid #EDC987;
+      padding-bottom: 8px;
+    }
+    .stats-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .stat-box {
+      flex: 1;
+      min-width: 160px;
+      background: #FAF0D8;
+      border: 1px solid #EDC987;
+      border-radius: 6px;
+      padding: 16px 20px;
+      text-align: center;
+    }
+    .stat-box .stat-label {
+      font-size: 11px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+    .stat-box .stat-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: #8B1A1A;
+      line-height: 1;
+    }
+    .stat-box .stat-sub {
+      font-size: 11px;
+      color: #888;
+      margin-top: 6px;
+    }
+    .grade-breakdown {
+      margin-top: 18px;
+    }
+    .grade-breakdown h4 {
+      font-size: 12px;
+      color: #5a3a00;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .grade-breakdown table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .grade-breakdown th {
+      background: #EDC987;
+      padding: 6px 10px;
+      text-align: left;
+      font-weight: bold;
+      border: 1px solid #c8a96e;
+    }
+    .grade-breakdown td {
+      padding: 6px 10px;
+      border: 1px solid #e5d5b0;
+      background: #FFFDF7;
+    }
+    .grade-breakdown tr:nth-child(even) td { background: #FAF0D8; }
+    .gp-val { font-weight: bold; color: #8B1A1A; }
+    .formula-note {
+      margin-top: 14px;
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+    }
+
+    /* Print / action bar */
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 18px;
+      margin-bottom: 36px;
+    }
+    .action-bar button {
       border: none;
       border-radius: 4px;
-      padding: 9px 28px;
+      padding: 10px 26px;
       font-size: 13px;
       font-weight: bold;
       cursor: pointer;
       font-family: Arial, sans-serif;
     }
-    .print-bar button:hover { background: #7a5000; }
+    .btn-print  { background: #8B1A1A; color: #fff; }
+    .btn-print:hover  { background: #a02020; }
 
     footer {
       width: 100%;
@@ -191,6 +257,11 @@
       color: #999;
       border-top: 1px solid #ddd;
       margin-top: auto;
+    }
+
+    @media(max-width: 600px) {
+      .search-card { padding: 20px 16px; }
+      .stats-row { flex-direction: column; }
     }
   </style>
 </head>
@@ -209,7 +280,7 @@
            autocomplete="off" inputmode="numeric"/>
     <button id="fetchBtn" onclick="fetchResult()">Get Result</button>
   </div>
-  <p class="hint">Please enter your <b>12-digit</b> hall ticket number. Example: 216325672007</p>
+  <p class="hint">Please enter your <b>12-digit</b> hall ticket number &amp; press Get Result.</p>
   <div class="error-msg" id="errorMsg"></div>
   <div class="spinner-wrap" id="spinner">
     <div class="spinner"></div>
@@ -217,27 +288,78 @@
   </div>
 </div>
 
-<div class="result-wrap" id="resultWrap">
-  <div class="result-bar">Result fetched successfully</div>
-  <!-- The exact Osmania HTML is injected here via srcdoc -->
-  <iframe id="previewFrame" title="Osmania Result"></iframe>
-</div>
+<!-- ── Result Section ── -->
+<div class="result-section" id="resultSection">
 
-<div class="print-bar" id="printBar">
-  <button onclick="document.getElementById('previewFrame').contentWindow.print()">
-    🖨 Print Result
-  </button>
+  <div class="result-bar">Result fetched successfully from Osmania University</div>
+
+  <!-- Exact original Osmania HTML injected here (pixel-perfect like Postman preview) -->
+  <iframe id="previewFrame" title="Osmania Result" scrolling="no"></iframe>
+
+  <!-- SGPA + Percentage Card (calculated from the fetched result) -->
+  <div class="calc-card">
+    <h3>📊 SGPA &amp; Percentage Calculation</h3>
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-label">SGPA</div>
+        <div class="stat-value" id="sgpaVal">—</div>
+        <div class="stat-sub">Semester Grade Point Average</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Percentage</div>
+        <div class="stat-value" id="percVal">—</div>
+        <div class="stat-sub">SGPA × 10</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Total Credits</div>
+        <div class="stat-value" id="credVal">—</div>
+        <div class="stat-sub">Earned this semester</div>
+      </div>
+    </div>
+
+    <!-- Breakdown table -->
+    <div class="grade-breakdown" id="breakdownWrap" style="display:none">
+      <h4>Subject-wise Grade Points</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Sub Code</th>
+            <th>Subject Name</th>
+            <th>Credits</th>
+            <th>Grade</th>
+            <th>Grade Point</th>
+            <th>Points Earned</th>
+          </tr>
+        </thead>
+        <tbody id="breakdownBody"></tbody>
+        <tfoot id="breakdownFoot"></tfoot>
+      </table>
+    </div>
+
+    <p class="formula-note">
+      SGPA = Total Points ÷ Total Credits &nbsp;|&nbsp; Percentage = SGPA × 10 &nbsp;|&nbsp;
+      Grade Scale: O=10, A+=9, A=8, B+=7, B=6, C=5
+    </p>
+  </div>
+
+  <div class="action-bar">
+    <button class="btn-print" onclick="document.getElementById('previewFrame').contentWindow.print()">
+      🖨 Print Result
+    </button>
+  </div>
 </div>
 
 <footer>Osmania University · Results Portal · 2026 &nbsp;|&nbsp; Data sourced directly from osmania.ac.in</footer>
 
 <script>
-  // ─────────────────────────────────────────────────────
-  // ★  Replace this with YOUR Cloudflare Worker URL
-  //    after deploying worker.js
-  //    e.g. "https://osmania-proxy.yourname.workers.dev"
-  // ─────────────────────────────────────────────────────
-  const WORKER_URL = "https://old-rice-ce7a.donthulanithish53.workers.devhttps://old-rice-ce7a.donthulanithish53.workers.dev";
+  // ──────────────────────────────────────────────────────────────
+  //  ★  REPLACE THIS with your Cloudflare Worker URL
+  //     e.g. "https://osmania-proxy.yourname.workers.dev"
+  // ──────────────────────────────────────────────────────────────
+  const WORKER_URL = "https://old-rice-ce7a.donthulanithish53.workers.dev";
+
+  // Grade point map (as per your provided calculation)
+  const GRADE_MAP = { "O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5 };
 
   function showError(msg) {
     const el = document.getElementById('errorMsg');
@@ -249,20 +371,20 @@
     const htno = document.getElementById('htno').value.trim();
     const btn  = document.getElementById('fetchBtn');
 
-    // Reset
+    // Reset UI
     document.getElementById('errorMsg').className = 'error-msg';
-    document.getElementById('resultWrap').className = 'result-wrap';
-    document.getElementById('printBar').className = 'print-bar';
+    document.getElementById('resultSection').className = 'result-section';
+    document.getElementById('sgpaVal').textContent = '—';
+    document.getElementById('percVal').textContent = '—';
+    document.getElementById('credVal').textContent = '—';
+    document.getElementById('breakdownWrap').style.display = 'none';
 
     // Validate
-    if (!htno)                     return showError('Please enter your Hall Ticket Number.');
-    if (!/^\d{12}$/.test(htno))    return showError('Must be exactly 12 digits. Example: 216325672007');
+    if (!htno)                  return showError('Please enter your Hall Ticket Number.');
+    if (!/^\d{12}$/.test(htno)) return showError('Must be exactly 12 digits. Example: 216325672007');
 
-    // Check worker is configured
     if (WORKER_URL.includes('YOUR-WORKER')) {
-      return showError(
-        'Setup needed: Open index.html in Notepad and replace YOUR-WORKER.workers.dev with your Cloudflare Worker URL. See README.md for instructions.'
-      );
+      return showError('Setup needed: Open index.html in Notepad and replace YOUR-WORKER.workers.dev with your Cloudflare Worker URL. See README.md.');
     }
 
     btn.disabled = true;
@@ -286,53 +408,126 @@
       ]);
 
       if (!res.ok) throw new Error('Server error: HTTP ' + res.status);
+      const html = await res.text();
 
-      let html = await res.text();
-
-      // Basic check
       if (!html.includes('Hall Ticket') && !html.includes('MBA')) {
         showError('No result found for Hall Ticket No. ' + htno + '. Please check the number.');
         return;
       }
 
-      // ── Inject the EXACT university HTML into the iframe via srcdoc ──
-      // This gives pixel-perfect output identical to Postman preview
-      const frame = document.getElementById('previewFrame');
+      document.getElementById('spinner').className = 'spinner-wrap';
 
-      // Auto-resize iframe to its content height after loading
+      // ── 1. Inject exact Osmania HTML into iframe (pixel-perfect) ──
+      const frame = document.getElementById('previewFrame');
       frame.onload = function () {
         try {
           const h = frame.contentDocument.body.scrollHeight;
-          frame.style.height = (h + 20) + 'px';
+          frame.style.height = (h + 10) + 'px';
         } catch(e) {
           frame.style.height = '520px';
         }
-        document.getElementById('spinner').className = 'spinner-wrap';
-        document.getElementById('resultWrap').className = 'result-wrap show';
-        document.getElementById('printBar').className = 'print-bar show';
-        btn.disabled = false;
-
-        // Smooth scroll to result
-        setTimeout(() => {
-          document.getElementById('resultWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
+        // ── 2. Calculate SGPA from the fetched HTML ──
+        calculateSGPA(html);
       };
-
-      // Set the fetched HTML directly — same as Postman "Preview" tab
       frame.srcdoc = html;
 
-    } catch (e) {
+      // Show result section
+      document.getElementById('resultSection').className = 'result-section show';
+      setTimeout(() => {
+        document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+
+    } catch(e) {
       document.getElementById('spinner').className = 'spinner-wrap';
       showError('Error: ' + e.message);
+    } finally {
       btn.disabled = false;
     }
   }
 
-  // Allow pressing Enter
+  // ── Calculate SGPA + Percentage from raw HTML string ──
+  function calculateSGPA(html) {
+    // Parse the HTML
+    const parser = new DOMParser();
+    const doc    = parser.parseFromString(html, 'text/html');
+
+    // Find the marks table (AutoNumber4)
+    const marksTable = doc.getElementById('AutoNumber4');
+    if (!marksTable) return;
+
+    const rows = marksTable.querySelectorAll('tr');
+    let totalCredits = 0;
+    let totalPoints  = 0;
+    const breakdown  = [];
+
+    rows.forEach((row, index) => {
+      if (index === 0 || index === 1) return; // skip section header + column header
+      const cols = row.querySelectorAll('td');
+      if (cols.length < 4) return;
+
+      const subCode = cols[0].innerText.trim();
+      const subName = cols[1].innerText.trim();
+      const credit  = parseFloat(cols[2].innerText.trim());
+      const grade   = cols[3].innerText.trim();
+      const gp      = GRADE_MAP[grade];
+
+      if (!isNaN(credit) && gp !== undefined) {
+        totalCredits += credit;
+        totalPoints  += credit * gp;
+        breakdown.push({ subCode, subName, credit, grade, gp, points: credit * gp });
+      }
+    });
+
+    if (totalCredits === 0) return;
+
+    const sgpa       = (totalPoints / totalCredits).toFixed(2);
+    const percentage = (sgpa * 10).toFixed(2);
+
+    // Update stat boxes
+    document.getElementById('sgpaVal').textContent = sgpa;
+    document.getElementById('percVal').textContent = percentage + '%';
+    document.getElementById('credVal').textContent = totalCredits;
+
+    // Build breakdown table
+    const tbody = document.getElementById('breakdownBody');
+    const tfoot = document.getElementById('breakdownFoot');
+    tbody.innerHTML = '';
+    tfoot.innerHTML = '';
+
+    breakdown.forEach(r => {
+      tbody.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td>${r.subCode}</td>
+          <td>${r.subName}</td>
+          <td style="text-align:center">${r.credit}</td>
+          <td style="text-align:center"><b>${r.grade}</b></td>
+          <td style="text-align:center" class="gp-val">${r.gp}</td>
+          <td style="text-align:center">${r.points.toFixed(1)}</td>
+        </tr>
+      `);
+    });
+
+    tfoot.innerHTML = `
+      <tr style="background:#EDC987;font-weight:bold">
+        <td colspan="2">Total</td>
+        <td style="text-align:center">${totalCredits}</td>
+        <td></td>
+        <td></td>
+        <td style="text-align:center">${totalPoints.toFixed(1)}</td>
+      </tr>
+      <tr style="background:#FAF0D8;font-weight:bold">
+        <td colspan="4">SGPA = ${totalPoints.toFixed(1)} ÷ ${totalCredits} = <span style="color:#8B1A1A">${sgpa}</span></td>
+        <td colspan="2">Percentage = ${sgpa} × 10 = <span style="color:#8B1A1A">${percentage}%</span></td>
+      </tr>
+    `;
+
+    document.getElementById('breakdownWrap').style.display = 'block';
+  }
+
+  // Enter key support
   document.getElementById('htno').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') fetchResult();
   });
 </script>
-
 </body>
 </html>
